@@ -1,8 +1,11 @@
-#! /usr/bin/env node
 const fs = require('fs')
 
-const path = './file.txt'
+const path = './AssetPlusFund.prj'
 
 try{
-
-process
+    if(fs.existsSync(path)){
+        console.log("exist");
+    }
+}catch(err){
+    console.error(err)
+}
