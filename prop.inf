@@ -1,0 +1,18 @@
+{
+  "general": {
+    "autoScale": true,
+    "userSize": false,
+    "docWidth": 640,
+    "docHeight": 1137,
+    "scaleVal": 70,
+    "isPort": true,
+    "scaleValue": "70"
+  },
+  "build": {
+    "autoInc": true,
+    "dynamicInc": true,
+    "bridgeName": "phonegap",
+    "compress": false,
+    "projectName": "AssetPlusFund"
+  }
+}

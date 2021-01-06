@@ -1,0 +1,24 @@
+{
+  "compCountMap": {
+    "ALabel": 2112,
+    "AButton": 906,
+    "AView": 2782,
+    "ATabView": 33,
+    "APage": 80,
+    "EXSecureTextField": 27,
+    "AListView": 47,
+    "ACheckBox": 141,
+    "ATextField": 241,
+    "AImage": 37,
+    "ADropBox": 59,
+    "ADatePicker": 36,
+    "AGrid": 64,
+    "AToolBar": 9,
+    "ARadioGroup": 46,
+    "ARadioButton": 128,
+    "EXPivotView": 4,
+    "ACanvas": 1,
+    "AWindow": 138,
+    "AWebView": 9
+  }
+}
