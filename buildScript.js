@@ -73,6 +73,7 @@ try{
 }
 
 function buildFileTree(fileTree){
+    let jArray = ;
     let csName = fileTree.name;
 
     let type = parseInt(fileTree.type);
@@ -84,10 +85,16 @@ function buildFileTree(fileTree){
             let csName = 'bin';
 
         //folder
-        case DeclareEnum.TYPE_FOLDER:
-            if(csName == "Tempalte") break;
+        case FILE_TYPE.TYPE_FOLDER:
+            if(csName === 'Template') break;
             
-            let csFolder = "./"+csName+"/";
+            let csFolder = curPath+csName+'\\';
+
+            jArray = fileTree.children;
+            size=jArray.length;
+            for(let i=0; i < size; i++){
+                buildFileTree(jArray[i], csFolder);
+            }
 
         break;
         
@@ -272,17 +279,25 @@ function replaceAbsToRel(strStart, strEnd, sData){
 
         exMark = sUrl.charAt(4);
 
-        isMark = (exmark=='\'' || exMark=='\"');
+        isMark = (exmark==='\'' || exMark==='\"');
 
         if(isMark) exmark = sUrl.charAt(5);
 
-        if(exMark=='#' || exMark=='.')
+        if(exMark==='#' || exMark==='.')
         {
             nStart += sUrl.length();
             continue;
         }
 
-        sName = sUrl.substring()
+        //extract file name -> imgName.png or imgName.png'
+        sName = sUrl.substring(sUrl.lastIndexOf('/')+1);
+
+        if(isMark) sName = sUrl.substring(0, sName.length-1);
+
+        sReplace = 'url(\''+m_AssetMap[sName] + '\'';
+        sData = sData.substring(0, nStart) + sReplace + sData.substring(nStart+sUrl.length, sData.length);
+
+        nStart += sReplace.length;
     }
 }
 
