@@ -21,3 +21,5 @@ todos.forEach(todo => {
 //잃어버린 변수 찾기
 // stdafx.h를 잘 찾아보도록 하자
 // g_strCurPath, HTML_LOC, 
+//global.h
+//CString g_strCurPath = L"";
