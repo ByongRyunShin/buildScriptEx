@@ -379,10 +379,17 @@ function buildClsFile(srcPath, dstPath){
             tmp = sFileData.indexOf('<', tmp);
             if(tmp == -1) return false;
 
-            sFileData = sFileData.replace(offset, tmp)
-            sFileData = sFileData.substring(0, offset) + 'document.write(\'<script src=\"' + sFileData.substring(nStart+sUrl.length, sData.length);
+            sFileData = sFileData.substring(0, offset) + 'document.write(\'<script src=\"' + sFileData.substring(offset+'document.write(\'<script src=\"'.length, sFileData.length);
+            offset += 'document.write(\'<script src=\"'.length;
+
+            offset = sFileData.indexOf('>', offset + 1);
+            if(offset == -1) return false;
+
+            sFileData = sFileData.substring(0, offset) + '\"></script>\');' + sFileData.substring(offset+1, sFileData.length);
+            
         }
     }
+
 	var isTrue;
 	if(num == 1)
     	isTrue = true;
