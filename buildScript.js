@@ -1,9 +1,13 @@
+const { DH_CHECK_P_NOT_PRIME } = require('constants');
 const { FILE, FORMERR } = require('dns');
 const fs = require('fs');
 
 const prjPath = './AssetPlusFund.prj';
 const propPath = './prop.inf';
 const paramPath = './param.inf';
+
+const HTML_LOC = '..\\'
+
 global.jProject; //json data
 global.jProp; //json data
 global.jParam; //json data
@@ -55,9 +59,30 @@ let m_BuildOption = {
     projectName: ''
 }
 
-//get commanline paramter 
-//process.argv.slice(2);
-//console.log(process.argv.slice(2).toString());
+const INDEX_FILE = '\
+<!DOCTYPE html>\r\n\
+<html>\r\n\
+<head>\r\n\
+	<meta charset=\"utf-8\">\r\n\
+	<title>@title@</title>\r\n\
+@default-css@\r\n\
+@user-css@\r\n\
+	<script>\r\n\
+		var PROJECT_OPTION = \r\n\
+		{\r\n\
+			autoInc: @auto-inc@, dynamicInc: @dynamic-inc@, autoScale: @auto-scale@, docWidth: @doc-width@, scaleVal: @scale-val@,\r\n\
+			bridgeName: \'@bridge-name@\',\r\n\
+			projectName: \'@project-name@\'\r\n\
+		};\r\n\
+	</script>\r\n\
+@default-js@\r\n\
+@user-js@\r\n\
+</head>\r\n\
+<body>\r\n\
+	<div id=\"page_navigator\">\r\n\
+	</div>\r\n\
+</body>\r\n\
+</html>\r\n'
 
 try{
     if(fs.existsSync(prjPath) && fs.existsSync(propPath) && fs.existsSync(paramPath)){
@@ -386,7 +411,40 @@ function buildClsFile(srcPath, dstPath){
             if(offset == -1) return false;
 
             sFileData = sFileData.substring(0, offset) + '\"></script>\');' + sFileData.substring(offset+1, sFileData.length);
-            
+            offset += '\"></script>\');'.length;
+        }
+
+        //@class TestView()         -> function TestView()
+        else if(keyword === '@class')
+        {
+            sFileData = sFileData.substring(0, offset) + '@class' + sFileData.substring(offset+'@class'.length, sFileData.length);
+            offset += 'function'.length;
+
+            tmp = sFileData.indexOf('(', offset);
+
+            className = sFileData.substring(offset, tmp);
+            className.trim();
+
+            offset = tmp;
+        }
+
+        else if(keyword === '@super')
+        {
+            //@super.init(context);     -> AView.prototype.init.call(this, context);
+            if(sFileData.charAt(tmp) === '.')
+            {
+                strTemp = baseClass + '.prototype';
+                sFileData = sFileData.substring(0, offset) + strTemp + sFileData.substring(tmp, sFileData.length);
+                offset += strTemp.length;
+
+                offset = sFileData.indexof('(', offset);
+                sFileData = sFileData.substring(0, offset) + '.call(this, ' + sFileData.substring(offset+1, sFileData.length); // ( -> .call(this, == @super.init( -> @super.init.call(this,
+                offset += '.call(this, '.length;
+
+                tmp = sFileData.
+                //파라미터가 없으면 콤마 제거
+                if(sFileData.charAt(tmp) === ')') sFileData = sFileData.substring(0, offset-2) + sFileData.substring(offset, sFileData.length);
+            }
         }
     }
 
@@ -488,6 +546,7 @@ function replaceAbsToRel(strStart, strEnd, sData){
         sData = sData.substring(0, nStart) + sReplace + sData.substring(nStart+sUrl.length, sData.length);
 
         nStart += sReplace.length;
+
     }
 }
 

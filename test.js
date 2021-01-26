@@ -23,3 +23,7 @@ todos.forEach(todo => {
 // g_strCurPath, HTML_LOC, 
 //global.h
 //CString g_strCurPath = L"";
+
+//get commanline paramter 
+//process.argv.slice(2);
+//console.log(process.argv.slice(2).toString());
